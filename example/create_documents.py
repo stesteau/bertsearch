@@ -58,8 +58,6 @@ def main(args):
             print("indexing shizzile \n")
             d = create_document(doc, emb, args.index_name)
             f.write(json.dumps(d) + '\n')
-            if(count > 1): 
-                break
 
 
 if __name__ == '__main__':
