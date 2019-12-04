@@ -1,10 +1,10 @@
 {
   "settings": {
-    "number_of_shards": 2,
+    "number_of_shards": 5,
     "number_of_replicas": 1
   },
   "mappings": {
-    "dynamic": "true",
+    "dynamic": "false",
     "_source": {
       "enabled": "true"
     },
@@ -15,6 +15,9 @@
       "text": {
         "type": "text"
       },
+      "docno": {
+          "type": "text"
+      },
       "text_vector": {
         "type": "dense_vector",
         "dims": 768
@@ -22,3 +25,4 @@
     }
   }
 }
+
