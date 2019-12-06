@@ -54,8 +54,8 @@ def main(args):
     with open(args.save, 'w') as f:
         count = 0
         for doc, emb in zip(docs, bulk_predict(docs)):
-            count = count + 1
-            print("indexing shizzile \n")
+            print("indexing " + str(count) + " - " + doc['head'])
+            count = count + 1            
             d = create_document(doc, emb, args.index_name)
             f.write(json.dumps(d) + '\n')
 
