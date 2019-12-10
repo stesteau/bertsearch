@@ -1,0 +1,78 @@
+{
+    "settings": {
+        "similarity": {
+            "scripted_tfidf": {
+                "type": "scripted",
+                "weight_script": {
+                    "source": "double idf = Math.log((field.docCount+1.0)/(term.docFreq+1.0)) + 1.0; return query.boost * idf;"
+                },
+                "script": {
+                    "source": "double tf = Math.sqrt(doc.freq); double norm = 1/Math.sqrt(doc.length); return weight * tf * norm;"
+                }
+            }
+        },
+        "index": {
+            "number_of_shards": 5,
+            "analysis": {
+                "analyzer": {
+                    "search_analyser": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": ["html_striper"],
+                        "filter": ["standard", "lowercase", "asciifolding"]
+                    },
+                    "custom_analyzer_en": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "html_striper"
+                        ],
+                        "filter": [
+                            "english_possessive_stemmer",
+                            "lowercase",
+                            "english_stop",
+                            "english_stemmer"                            
+                        ]
+                    }
+                },
+                "filter": {
+                    "english_stop": {
+                      "type":       "stop",
+                      "stopwords":  "_english_" 
+                    },
+                    "english_stemmer": {
+                      "type":       "stemmer",
+                      "language":   "english"
+                    },
+                    "english_possessive_stemmer": {
+                      "type":       "stemmer",
+                      "language":   "possessive_english"
+                    }
+                },
+                "char_filter": {
+                    "html_striper": {
+                        "type": "html_strip"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "custom_analyzer_en",
+                    "similarity": "scripted_tfidf"
+                },
+                "text": {
+                    "type": "text",
+                    "analyzer": "custom_analyzer_en",
+                    "similarity": "scripted_tfidf"
+                },
+                "docno": {
+                    "type": "text"
+
+                }
+            }        
+    }
+}

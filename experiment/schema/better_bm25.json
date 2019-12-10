@@ -1,0 +1,65 @@
+{
+    "settings": {
+        "index": {
+            "number_of_shards": 5,
+            "analysis": {
+                "analyzer": {
+                    "search_analyser": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": ["html_striper"],
+                        "filter": ["standard", "lowercase", "asciifolding"]
+                    },
+                    "custom_analyzer_en": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "html_striper"
+                        ],
+                        "filter": [
+                            "english_possessive_stemmer",
+                            "lowercase",
+                            "english_stop",
+                            "english_stemmer"                            
+                        ]
+                    }
+                },
+                "filter": {
+                    "english_stop": {
+                      "type":       "stop",
+                      "stopwords":  "_english_" 
+                    },
+                    "english_stemmer": {
+                      "type":       "stemmer",
+                      "language":   "english"
+                    },
+                    "english_possessive_stemmer": {
+                      "type":       "stemmer",
+                      "language":   "possessive_english"
+                    }
+                },
+                "char_filter": {
+                    "html_striper": {
+                        "type": "html_strip"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "custom_analyzer_en"
+                },
+                "text": {
+                    "type": "text",
+                    "analyzer": "custom_analyzer_en"
+                },
+                "docno": {
+                    "type": "text"
+
+                }
+            }        
+    }
+}
